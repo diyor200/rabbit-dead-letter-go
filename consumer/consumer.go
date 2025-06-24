@@ -30,19 +30,7 @@ func Consume() {
 
 	go func() {
 		for m := range msgs {
-			var retryCount int32
-			if v, ok := m.Headers["x-retries"]; ok {
-				if rc, ok := v.(int32); ok {
-					retryCount = rc
-				}
-			}
-
-			log.Printf("Main queue got: %s (retry: %d)\n", m.Body, retryCount)
-
-			if retryCount >= 0 {
-				log.Println("Max retries reached -> sending to DLQ")
-
-			}
+			log.Printf("Main queue got: %s\n", m.Body)
 
 			m.Reject(false)
 		}
