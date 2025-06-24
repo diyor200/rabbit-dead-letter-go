@@ -1,1 +1,1 @@
-```RabbitMQ's dead letter queue```
+```dead letter exchange based retry mechanism for rmq golang consumers```
