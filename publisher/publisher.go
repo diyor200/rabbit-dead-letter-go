@@ -8,7 +8,7 @@ import (
 	amqp "github.com/rabbitmq/amqp091-go"
 )
 
-func Publish() {
+func Publish(message string) {
 	conn, _ := amqp.Dial("amqp://user:password@localhost:5672")
 	defer conn.Close()
 
@@ -28,7 +28,7 @@ func Publish() {
 		false,
 		amqp.Publishing{
 			ContentType: "text/plain",
-			Body:        []byte("Hello message"),
+			Body:        []byte(message),
 			Headers:     amqp.Table{"x-retries": int32(0)},
 		},
 	)

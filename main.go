@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"rabbit_dead_letter/consumer"
 	"rabbit_dead_letter/publisher"
 	"time"
@@ -8,12 +9,13 @@ import (
 
 func main() {
 	go consumer.Consume()
-	go consumer.ConsumeDlQ()
+	// go consumer.ConsumeDlQ()
 
 	time.Sleep(time.Second * 2) // wait for consumers
 
-	for {
-		publisher.Publish()
-		time.Sleep(time.Second)
+	for i := 0; i < 5; i++ {
+		msg := fmt.Sprintf("message: %d", i)
+		publisher.Publish(msg)
 	}
+	select {}
 }
