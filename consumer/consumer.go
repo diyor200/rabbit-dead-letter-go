@@ -63,6 +63,15 @@ func Consume() {
 
 	go func() {
 		for m := range msgs {
+			if xDeath, ok := m.Headers["x-death"]; ok {
+				if deaths, ok := xDeath.([]interface{}); ok && len(deaths) > 0 {
+					if deathInfo, ok := deaths[0].(amqp.Table); ok {
+						if count, ok := deathInfo["count"].(int64); ok {
+							log.Println("message was in dlq: ", count)
+						}
+					}
+				}
+			}
 			log.Printf("[%s] Main queue got: %s → rejecting\n", time.Now().Format("15:04:05"), m.Body)
 			m.Reject(false)
 		}
